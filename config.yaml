@@ -1,0 +1,56 @@
+# ============================================================================
+# Orpheus configuration
+# Everything here is customizable. Values set here override the built-in
+# defaults. Environment variables (ORPHEUS_*) override everything.
+# ============================================================================
+
+# --- Local LLM inference backend -------------------------------------------
+# backend:  ollama | openai_compat
+#   ollama         -> talks to a local Ollama server (default on this machine)
+#   openai_compat  -> any server exposing POST /v1/chat/completions
+#                     (LM Studio, llama.cpp --server, vLLM, LocalAI, text-gen-webui, ...)
+backend: ollama
+
+# The local model tag to use. Change this to any model you have pulled/loaded.
+#   llama3.1:8b is a strong general instruct model well-suited to PII/sensitivity
+#   judgement. Alternatives: qwen2.5:7b-instruct, mistral:7b-instruct.
+model: llama3.1:8b
+
+# Base URL of your local inference server.
+#   ollama default:        http://localhost:11434
+#   LM Studio default:     http://localhost:1234/v1
+#   llama.cpp server:      http://localhost:8080/v1
+endpoint: http://localhost:11434
+
+# Only needed by some openai_compat servers. Leave blank for local ones.
+api_key: ""
+
+temperature: 0.0
+timeout_seconds: 120
+
+# Master switch for the contextual LLM pass. Set false for regex-only (fastest,
+# fully deterministic, no model needed).
+llm_scan: true
+
+# --- What to watch ----------------------------------------------------------
+# Directories monitored by `orpheus watch`. ~ is expanded.
+watch_paths:
+  - "~/Downloads/Orpheus/notes"
+
+# Where reports/masked copies are written. Blank = alongside the source file.
+output_dir: ""
+
+# --- Masking behaviour ------------------------------------------------------
+masking:
+  # copy        -> write a *.masked.md copy (originals never touched)
+  # report_only -> only write the findings report, no masked copy
+  mode: copy
+  # label -> [REDACTED:EMAIL]      block -> ████████
+  style: label
+
+# --- Detection categories (toggle any off) ----------------------------------
+categories:
+  classic_pii: true          # names, emails, phones, addresses, SSN, DOB
+  financial_secrets: true    # credit cards, IBAN, API keys, tokens, private keys
+  mip_labels: true           # Microsoft Information Protection textual markings
+  corporate_sensitive: true  # LLM-judged internal/confidential business content

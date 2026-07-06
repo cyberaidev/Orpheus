@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local config with any secrets / user-specific paths
+# (a safe template is committed as config.yaml; do NOT commit a filled-in local copy)
+config.local.yaml
+*.env
+.env
+.env.*
+
+# Orpheus scan outputs (never commit scanned content or its redactions)
+*.masked.md
+*.orpheus-report.md
+notes/
+!tests/sample.md
+
+# macOS / editor junk
+.DS_Store
+*.swp
+.idea/
+.vscode/
